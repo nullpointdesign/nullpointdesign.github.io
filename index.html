@@ -73,22 +73,97 @@
             box-shadow: 2px 2px 0px rgba(255, 255, 255, 0.3);
         }
 
-        /* TOP RIGHT NAME LINK */
-        .nav-name-link {
+        /* TOP RIGHT NAME */
+        .nav-name {
+            font-family: 'Josefin Sans', sans-serif;
             font-size: 11px;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: #fff; /* Brighter, like Wanda's footer */
-            text-decoration: none;
+            color: var(--text);
+        }
+
+        /* HAMBURGER */
+        .hamburger-bar {
+            padding: 10px 0;
+            display: flex;
+            justify-content: flex-end;
+            position: relative;
+        }
+
+        .hamburger-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--muted);
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 0;
             transition: color 0.2s;
         }
 
-        .nav-name-link:hover {
-            color: var(--accent);
+        .hamburger-btn:hover { color: var(--text); }
+
+        .hamburger-icon {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            width: 18px;
         }
 
+        .hamburger-icon span {
+            display: block;
+            height: 1px;
+            background: currentColor;
+            transition: all 0.2s;
+        }
+
+        .hamburger-btn.open .hamburger-icon span:nth-child(1) {
+            transform: translateY(5px) rotate(45deg);
+        }
+        .hamburger-btn.open .hamburger-icon span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger-btn.open .hamburger-icon span:nth-child(3) {
+            transform: translateY(-5px) rotate(-45deg);
+        }
+
+        .hamburger-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            min-width: 180px;
+            z-index: 100;
+        }
+
+        .hamburger-menu.open { display: block; }
+
+        .hamburger-menu a {
+            display: block;
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text);
+            text-decoration: none;
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border);
+            transition: color 0.2s, background 0.2s;
+        }
+
+        .hamburger-menu a:last-child { border-bottom: none; }
+        .hamburger-menu a:hover { color: var(--accent); background: var(--accent-dim); }
+
         .hero {
-            padding: 80px 0 72px;
+            padding: 48px 0 72px;
             border-bottom: 1px solid var(--border);
         }
 
@@ -280,8 +355,21 @@
         <a href="#" class="wordmark">
             <span class="np-block"><span class="np-text">Null Point Design</span></span>
         </a>
-        <a href="#contact" class="nav-name-link">Get in Touch</a>
+        <span class="nav-name">Catherine Anderson</span>
     </nav>
+
+    <div class="hamburger-bar">
+        <button class="hamburger-btn" onclick="this.classList.toggle('open'); document.getElementById('hmenu').classList.toggle('open');">
+            <span class="hamburger-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+        </button>
+        <div class="hamburger-menu" id="hmenu">
+            <a href="#contact">Contact Me</a>
+        </div>
+    </div>
 
     <div class="hero">
         <div class="hero-eyebrow">Web Design &amp; Development</div>
