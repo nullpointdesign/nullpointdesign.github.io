@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anderson Creative — Web Design</title>
+    <title>Null Point Design — Web Design for Artists</title>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,300;0,400;1,100;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -42,34 +42,50 @@
             border-bottom: 1px solid var(--border);
         }
 
+        /* BRAND LOGO BLOCK */
         .wordmark {
-            font-family: 'Josefin Sans', sans-serif;
-            font-size: 15px;
-            font-weight: 300;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: var(--text);
-            text-decoration: underline;
-            text-decoration-color: var(--accent);
-            text-decoration-thickness: 1px;
-            text-underline-offset: 6px;
-            text-decoration-skip-ink: none;
+            text-decoration: none;
+            transition: all 0.1s ease;
         }
 
-        .wordmark em { color: var(--accent); font-style: normal; }
+        .np-block {
+            background-color: #2a2a2a;
+            padding: 4px 10px;
+            border: 1px solid #555;
+            display: inline-block;
+            line-height: 1;
+            box-shadow: 4px 4px 0px rgba(255, 255, 255, 0.2); 
+        }
 
-        .nav-contact {
-            font-size: 10px;
+        .np-text {
+            font-family: 'Josefin Sans', sans-serif;
+            color: #fff;
+            font-size: 0.85rem;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
+        .wordmark:hover .np-block {
+            background-color: #444;
+            border-color: #fff;
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px rgba(255, 255, 255, 0.3);
+        }
+
+        /* TOP RIGHT NAME LINK */
+        .nav-name-link {
+            font-size: 11px;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: var(--muted);
+            color: #fff; /* Brighter, like Wanda's footer */
             text-decoration: none;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 2px;
-            transition: color 0.2s, border-color 0.2s;
+            transition: color 0.2s;
         }
 
-        .nav-contact:hover { color: var(--accent); border-color: var(--accent); }
+        .nav-name-link:hover {
+            color: var(--accent);
+        }
 
         .hero {
             padding: 80px 0 72px;
@@ -86,7 +102,7 @@
 
         .hero h1 {
             font-family: 'Josefin Sans', sans-serif;
-            font-size: clamp(36px, 6vw, 58px);
+            font-size: clamp(34px, 6vw, 54px);
             font-weight: 100;
             letter-spacing: 2px;
             line-height: 1.15;
@@ -99,7 +115,7 @@
         .hero p {
             font-size: 13px;
             color: var(--muted);
-            max-width: 440px;
+            max-width: 480px;
             line-height: 1.9;
         }
 
@@ -123,7 +139,6 @@
             content: '⁂';
             color: var(--accent);
             font-size: 12px;
-            letter-spacing: 0;
             opacity: 0.6;
         }
 
@@ -235,51 +250,25 @@
             max-width: 520px;
         }
 
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2px;
-            margin-bottom: 24px;
-        }
-
-        .contact-item {
-            background: var(--surface);
-            padding: 24px 28px;
-        }
-
-        .contact-label {
-            font-size: 10px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+        .contact-note {
+            font-size: 11px;
             color: var(--muted);
-            margin-bottom: 8px;
+            line-height: 1.8;
+            margin-top: 24px;
         }
-
-        .contact-value {
-            font-family: 'Josefin Sans', sans-serif;
-            font-size: 15px;
-            font-weight: 300;
-            letter-spacing: 2px;
-            color: var(--text);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .contact-value:hover { color: var(--accent); }
-        .contact-note { font-size: 11px; color: var(--muted); line-height: 1.8; }
 
         footer {
-            padding: 32px 0;
+            padding: 48px 0;
             display: flex;
             justify-content: space-between;
             font-size: 11px;
             color: var(--muted);
             letter-spacing: 1px;
+            border-top: 1px solid var(--border);
         }
 
         @media (max-width: 580px) {
             .services { grid-template-columns: 1fr; }
-            .contact-grid { grid-template-columns: 1fr; }
             .project { grid-template-columns: 1fr; }
         }
     </style>
@@ -288,14 +277,16 @@
 <div class="wrap">
 
     <nav>
-        <a href="#" class="wordmark">Anderson<em> Creative</em></a>
-        <a href="#contact" class="nav-contact">Get in touch</a>
+        <a href="#" class="wordmark">
+            <span class="np-block"><span class="np-text">Null Point Design</span></span>
+        </a>
+        <a href="#contact" class="nav-name-link">Get in Touch</a>
     </nav>
 
     <div class="hero">
         <div class="hero-eyebrow">Web Design &amp; Development</div>
         <h1>Websites that<br>work as hard<br>as <em>you</em> do.</h1>
-        <p>Small-business web design with an eye for craft. Clean code, considered aesthetics, built to last. Based wherever the work is good.</p>
+        <p>Small-business web design with an eye for craft. Clean code, considered aesthetics, built to last. I focus on helping artists and independent professionals reach their own escape velocity.</p>
     </div>
 
     <section>
@@ -314,12 +305,12 @@
             <div class="service">
                 <div class="service-num">03</div>
                 <h3>Image &amp; Gallery Work</h3>
-                <p>Portfolio and gallery optimization for artists and photographers. Your work deserves to be seen properly.</p>
+                <p>Portfolio optimization for artists. Every pixel is considered so your work is seen exactly as intended.</p>
             </div>
             <div class="service">
                 <div class="service-num">04</div>
                 <h3>Ongoing Maintenance</h3>
-                <p>Updates, housekeeping, new pages. A steady hand for when you need changes without the project overhead.</p>
+                <p>Updates and housekeeping for when you need changes without the major project overhead.</p>
             </div>
         </div>
     </section>
@@ -329,15 +320,14 @@
         <div class="project">
             <div>
                 <div class="project-title">Artist Portfolio Site</div>
-                <p class="project-desc">Full redesign and series migration for a working visual artist. Converted image series to optimized web format, restructured navigation, rebuilt mobile layout, pushed to staging for client review.</p>
+                <p class="project-desc">Full brand overhaul and portfolio migration for a working visual artist. Converted complex image series to optimized formats, restructured navigation, and built professional authority through clean, intentional design.</p>
                 <div class="project-tags">
-                    <span class="tag">HTML/CSS</span>
-                    <span class="tag">Responsive</span>
+                    <span class="tag">Static HTML</span>
                     <span class="tag">Image optimization</span>
                     <span class="tag">Redesign</span>
                 </div>
             </div>
-            <a href="#contact" class="project-link">Inquire →</a>
+            <a href="https://artbywandabryant.com" target="_blank" class="project-link">View Site →</a>
         </div>
     </section>
 
@@ -346,7 +336,7 @@
         <div class="approach-text">
             I write the code myself. Every pixel is considered.
         </div>
-        <p class="approach-body">I work best with clients who care about how their site looks and functions — artists, small businesses, independent professionals. I'm not a template shop. If you want something that feels genuinely made rather than assembled, that's what I do. Projects are scoped clearly, billed honestly, and delivered on time.</p>
+        <p class="approach-body">I work best with clients who care about how their site looks and functions. I'm not a template shop. If you want something that feels genuinely made rather than assembled, that's what I do. Projects are scoped clearly, billed honestly, and delivered on time.</p>
     </section>
 
     <section id="contact">
@@ -375,12 +365,10 @@
     </section>
 
     <footer>
-        <span>&copy; 2026 Anderson Creative</span>
-        <span style="color:var(--accent); opacity:0.5;">⁂</span>
+        <span>&copy; 2026 Null Point Design</span>
         <span>Catherine Anderson</span>
     </footer>
 
 </div>
-<!-- built by hand · nullpointdesign.github.io -->
 </body>
 </html>
