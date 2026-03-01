@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wheel of the Year · 2026</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Mono:wght@300;400&display=swap');
+
+        :root {
+            --ink: #1c1a14;
+            --parchment: #f4eed8;
+            --warm: #e8dfc0;
+            --muted: #7a6e52;
+            --gold: #c8930a;
+            --gold-light: #e8b84b;
+            --imbolc: #b8c9e8;
+            --ostara: #7aab6e;
+            --beltane: #e87a3a;
+            --litha: #f5c842;
+            --lammas: #c87820;
+            --mabon: #c84820;
+            --samhain: #5a3a8a;
+            --yule: #2a4a6a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--ink);
+            color: var(--parchment);
+            font-family: 'EB Garamond', serif;
+            min-height: 100vh;
+            padding: 40px 20px 80px;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        /* HEADER */
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .header::before, .header::after {
+            content: '✦';
+            color: var(--gold);
+            font-size: 14px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .header::before { left: 0; }
+        .header::after { right: 0; }
+
+        .header h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 42px;
+            letter-spacing: 6px;
+            color: var(--gold-light);
+            text-transform: uppercase;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .header .sub {
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+            font-size: 18px;
+            color: var(--muted);
+            letter-spacing: 2px;
+        }
+
+        /* WHEEL INDICATOR — MAIN */
+        .wheel-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+            align-items: start;
+        }
+
+        .wheel-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .wheel-label {
+            font-family: 'Cinzel', serif;
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+
+        svg.wheel { filter: drop-shadow(0 0 40px rgba(200,147,10,0.15)); }
+
+        /* TODAY CARD */
+        .today-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(200,147,10,0.3);
+            padding: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .today-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--ostara), var(--gold-light), var(--ostara));
+        }
+
+        .tc-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 16px;
+        }
+
+        .tc-house {
+            font-family: 'Cinzel', serif;
+            font-size: 32px;
+            color: var(--gold-light);
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .tc-phase {
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+            font-size: 20px;
+            color: var(--ostara);
+            margin-bottom: 24px;
+        }
+
+        .tc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .tc-stat { }
+        .tc-stat .stat-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+        .tc-stat .stat-value {
+            font-family: 'Cinzel', serif;
+            font-size: 22px;
+            color: var(--parchment);
+        }
+        .tc-stat .stat-note {
+            font-size: 12px;
+            color: var(--muted);
+            font-style: italic;
+        }
+
+        /* Progress bar */
+        .progress-wrap {
+            margin-top: 8px;
+        }
+        .progress-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .progress-track {
+            height: 6px;
+            background: rgba(255,255,255,0.08);
+            position: relative;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--ostara), var(--gold-light));
+            position: relative;
+        }
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            right: -4px;
+            top: -3px;
+            width: 12px;
+            height: 12px;
+            background: var(--gold-light);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--gold);
+        }
+        .progress-sabbat {
+            position: absolute;
+            top: -3px;
+            width: 2px;
+            height: 12px;
+            background: var(--gold);
+        }
+
+        .alt-names {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+        .alt-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+        .alt-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .alt-tag {
+            font-style: italic;
+            font-size: 14px;
+            color: rgba(244,238,216,0.6);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 3px 10px;
+        }
+
+        /* FULL REFERENCE TABLE */
+        .ref-title {
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .houses-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px;
+            margin-bottom: 60px;
+        }
+
+        .house-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.07);
+            padding: 20px 16px;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.2s;
+        }
+
+        .house-card:hover { background: rgba(255,255,255,0.06); }
+
+        .house-card.current {
+            background: rgba(200,147,10,0.08);
+            border-color: rgba(200,147,10,0.4);
+        }
+
+        .house-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+        }
+
+        .house-card.imbolc::before  { background: var(--imbolc); }
+        .house-card.ostara::before  { background: var(--ostara); }
+        .house-card.beltane::before { background: var(--beltane); }
+        .house-card.litha::before   { background: var(--litha); }
+        .house-card.lammas::before  { background: var(--lammas); }
+        .house-card.mabon::before   { background: var(--mabon); }
+        .house-card.samhain::before { background: var(--samhain); }
+        .house-card.yule::before    { background: var(--yule); }
+
+        .hc-season {
+            font-family: 'DM Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
+        .hc-name {
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            color: var(--parchment);
+            margin-bottom: 2px;
+        }
+
+        .hc-nickname {
+            font-style: italic;
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 14px;
+        }
+
+        .hc-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            margin-bottom: 4px;
+            color: rgba(244,238,216,0.7);
+        }
+        .hc-row .hc-key {
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .hc-sabbat-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            margin: 8px 0;
+            padding: 6px 0;
+            border-top: 1px solid rgba(255,255,255,0.07);
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+        .hc-sabbat-row .hc-key { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--gold); }
+        .hc-sabbat-date { color: var(--gold-light); font-family: 'Cinzel', serif; font-size: 13px; }
+
+        .hc-trad {
+            font-style: italic;
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 8px;
+        }
+
+        .current-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-family: 'DM Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1px;
+            background: var(--gold);
+            color: var(--ink);
+            padding: 2px 6px;
+        }
+
+        /* MINI WHEELS ROW */
+        .mini-wheels-title {
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .mini-wheels {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        .mini-wheel-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mini-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        .mini-date {
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+            font-size: 13px;
+            color: rgba(244,238,216,0.6);
+            text-align: center;
+        }
+
+        /* MINI WHEEL CUSTOMIZATION */
+        .mini-customize {
+            width: 100%;
+            margin-top: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .mini-customize input[type="text"],
+        .mini-customize input[type="date"] {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(200,147,10,0.25);
+            color: var(--parchment);
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1px;
+            padding: 5px 8px;
+            width: 100%;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .mini-customize input[type="text"]::placeholder {
+            color: var(--muted);
+            font-style: italic;
+        }
+
+        .mini-customize input:focus {
+            border-color: rgba(200,147,10,0.6);
+        }
+
+        .mini-customize input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(0.6) sepia(1) saturate(2) hue-rotate(5deg);
+            cursor: pointer;
+        }
+
+        .mini-edit-btn {
+            background: none;
+            border: 1px solid rgba(200,147,10,0.2);
+            color: var(--muted);
+            font-family: 'DM Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s;
+            margin-top: 2px;
+        }
+
+        .mini-edit-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            padding-top: 32px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .footer p {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        .divider {
+            text-align: center;
+            color: var(--gold);
+            font-size: 16px;
+            letter-spacing: 12px;
+            margin: 40px 0;
+            opacity: 0.5;
+        }
+
+        /* ── RESPONSIVE ─────────────────────────────────── */
+        @media (max-width: 700px) {
+            body { padding: 24px 14px 60px; }
+            .header h1 { font-size: 26px; letter-spacing: 2px; }
+            .header .sub { font-size: 12px; letter-spacing: 1px; }
+            .header::before, .header::after { display: none; }
+            .wheel-section { grid-template-columns: 1fr; gap: 20px; }
+            svg.wheel { width: 300px !important; height: 300px !important; }
+            .today-card { padding: 18px 14px; }
+            .tc-house { font-size: 22px; }
+            .tc-phase { font-size: 15px; margin-bottom: 16px; }
+            .tc-grid { grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+            .stat-value { font-size: 17px; }
+            .houses-grid { grid-template-columns: 1fr 1fr; }
+            .mini-wheels { grid-template-columns: 1fr 1fr; gap: 14px; }
+            .mini-wheels svg { width: 130px !important; height: 130px !important; }
+            .ref-title, .mini-wheels-title { font-size: 11px; letter-spacing: 2px; }
+            .divider { font-size: 12px; letter-spacing: 8px; margin: 28px 0; }
+        }
+        @media (max-width: 420px) {
+            svg.wheel { width: 260px !important; height: 260px !important; }
+            .houses-grid { grid-template-columns: 1fr; }
+            .mini-wheels svg { width: 110px !important; height: 110px !important; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="header">
+        <h1>Wheel of the Year</h1>
+        <div class="sub">Astronomical · 2026 · Sabbatical Houses</div>
+    </div>
+
+    <!-- MAIN: BIG WHEEL + TODAY CARD -->
+    <div class="wheel-section">
+        <div class="wheel-container">
+            <div class="wheel-label" id="wheelLabel">Today's Position</div>
+            <svg class="wheel" width="420" height="420" viewBox="0 0 420 420" id="mainWheel"></svg>
+        </div>
+        <div class="today-card">
+            <div class="tc-label">Current Position</div>
+            <div class="tc-house" id="tcHouse">—</div>
+            <div class="tc-phase" id="tcPhase">—</div>
+
+            <div class="tc-grid">
+                <div class="tc-stat">
+                    <div class="stat-label">Sabbat</div>
+                    <div class="stat-value" id="tcSabbatDate">—</div>
+                    <div class="stat-note" id="tcSabbatNote">—</div>
+                </div>
+                <div class="tc-stat">
+                    <div class="stat-label">House Ends</div>
+                    <div class="stat-value" id="tcHouseEnd">—</div>
+                    <div class="stat-note" id="tcNextHouse">—</div>
+                </div>
+                <div class="tc-stat">
+                    <div class="stat-label">Phase Progress</div>
+                    <div class="stat-value" id="tcPhaseProgress">—</div>
+                    <div class="stat-note" id="tcPhaseLabel">—</div>
+                </div>
+                <div class="tc-stat">
+                    <div class="stat-label">Year Position</div>
+                    <div class="stat-value" id="tcDayOfYear">—</div>
+                    <div class="stat-note">of 365</div>
+                </div>
+            </div>
+
+            <div class="progress-wrap">
+                <div class="progress-label">
+                    <span id="progressStart">—</span>
+                    <span id="progressEnd">—</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-sabbat" id="progressSabbat" style="left: 50%;"></div>
+                    <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+                </div>
+                <div style="display:flex; justify-content:center; margin-top:6px;">
+                    <div style="font-family:'DM Mono',monospace; font-size:9px; letter-spacing:1px; color:var(--gold); text-transform:uppercase;" id="sabbatLabel">—</div>
+                </div>
+            </div>
+
+            <div class="alt-names">
+                <div class="alt-label">This house is also called</div>
+                <div class="alt-tags" id="altTags"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="divider">✦ ✦ ✦</div>
+
+    <!-- MINI WHEELS: SAMPLE MOMENTS -->
+    <div class="mini-wheels-title">Sample Positions · Selected Dates</div>
+    <div class="mini-wheels" id="miniWheelsContainer">
+        <!-- mini wheels rendered by JS -->
+    </div>
+
+    <div class="divider">✦ ✦ ✦</div>
+
+    <!-- FULL REFERENCE -->
+    <div class="ref-title">The Eight Houses · Full Reference 2026</div>
+    <div class="houses-grid">
+
+        <div class="house-card imbolc">
+            <div class="hc-season">Winter → Spring</div>
+            <div class="hc-name">Imbolc</div>
+            <div class="hc-nickname">"First Light"</div>
+            <div class="hc-row"><span class="hc-key">Start</span><span>Jan 12</span></div>
+            <div class="hc-sabbat-row"><span class="hc-key">Sabbat</span><span class="hc-sabbat-date">Feb 3</span></div>
+            <div class="hc-row"><span class="hc-key">End</span><span>Feb 25</span></div>
+            <div class="hc-row"><span class="hc-key">Days</span><span>44 total · 22 | 22</span></div>
+            <div class="hc-trad">Traditional: Feb 2 (Candlemas)</div>
+        </div>
+
+        <div class="house-card ostara current">
+            <div class="current-badge">NOW</div>
+            <div class="hc-season">Spring Begins</div>
+            <div class="hc-name">Ostara</div>
+            <div class="hc-nickname">"Pastel Bunnies"</div>
+            <div class="hc-row"><span class="hc-key">Start</span><span>Feb 25</span></div>
+            <div class="hc-sabbat-row"><span class="hc-key">Sabbat</span><span class="hc-sabbat-date">Mar 20</span></div>
+            <div class="hc-row"><span class="hc-key">End</span><span>Apr 12</span></div>
+            <div class="hc-row"><span class="hc-key">Days</span><span>46 total · 23 | 23</span></div>
+            <div class="hc-trad">Traditional: Spring Equinox · Easter (varies)</div>
+        </div>
+
+        <div class="house-card beltane">
+            <div class="hc-season">Spring → Summer</div>
+            <div class="hc-name">Beltane</div>
+            <div class="hc-nickname">"Brightness"</div>
+            <div class="hc-row"><span class="hc-key">Start</span><span>Apr 12</span></div>
+            <div class="hc-sabbat-row"><span class="hc-key">Sabbat</span><span class="hc-sabbat-date">May 5</span></div>
+            <div class="hc-row"><span class="hc-key">End</span><span>May 28</span></div>
+            <div class="hc-row"><span class="hc-key">Days</span><span>46 total · 23 | 23</span></div>
+            <div class="hc-trad">Traditional: May 1 (May Day)</div>
+        </div>
+
+        <div class="house-card litha">
+            <div class="hc-season">Midsummer Peak</div>
+            <div class="hc-name">Litha</div>
+            <div class="hc-nickname">"Peak"</div>
+            <div class="hc-row"><span class="hc-key">Start</span><span>May 28</span></div>
+            <div class="hc-sabbat-row"><span class="hc-key">Sabbat</span><span class="hc-sabbat-date">Jun 21</span></div>
+            <div class="hc-row"><span class="hc-key">End</span><span>Jul 14</span></div>
+            <div class="hc-row"><span class="hc-key">Days</span><span>47 total · 24 | 23</span></div>
+            <div class="hc-trad">Traditional: Summer Solstice · Jul 4</div>
+        </div>
+
+        <div class="house-card lammas">
+            <div class="hc-season">Summer → Autumn</div>
+            <div class="hc-name">Lammas</div>
+            <div class="hc-nickname">"Reversal"</div>
+            <div class="hc-row"><span class="hc-key">Start</span><span>Jul 14</span></div>
+            <div class="hc-sabbat-row"><span class="hc-key">Sabbat</span><span class="hc-sabbat-date">Aug 6</span></div>
+            <div class="hc-row"><span class="hc-key">End</span><span>Aug 29</span></div>
+            <div class="hc-row"><span class="hc-key">Days</span><span>46 total · 23 | 23</span></div>
+            <div class="hc-trad">Traditional: Aug 1 (First Harvest)</div>
+        </div>
+
+        <div class="house-card mabon">
+            <div class="hc-season">Autumn Deepens</div>
+            <div class="hc-name">Mabon</div>
+            <div class="hc-nickname">"Joy"</div>
+            <div class="hc-row"><span class="hc-key">Start</span><span>Aug 29</span></div>
+            <div class="hc-sabbat-row"><span class="hc-key">Sabbat</span><span class="hc-sabbat-date">Sep 22</span></div>
+            <div class="hc-row"><span class="hc-key">End</span><span>Oct 14</span></div>
+            <div class="hc-row"><span class="hc-key">Days</span><span>46 total · 24 | 22</span></div>
+            <div class="hc-trad">Traditional: Fall Equinox</div>
+        </div>
+
+        <div class="house-card samhain">
+            <div class="hc-season">Autumn → Winter</div>
+            <div class="hc-name">Samhain</div>
+            <div class="hc-nickname">"Darkening"</div>
+            <div class="hc-row"><span class="hc-key">Start</span><span>Oct 14</span></div>
+            <div class="hc-sabbat-row"><span class="hc-key">Sabbat</span><span class="hc-sabbat-date">Nov 6</span></div>
+            <div class="hc-row"><span class="hc-key">End</span><span>Nov 28</span></div>
+            <div class="hc-row"><span class="hc-key">Days</span><span>45 total · 23 | 22</span></div>
+            <div class="hc-trad">Traditional: Oct 31 (Halloween) — note: in Rising, not Peak</div>
+        </div>
+
+        <div class="house-card yule">
+            <div class="hc-season">Midwinter</div>
+            <div class="hc-name">Yule</div>
+            <div class="hc-nickname">"Peace"</div>
+            <div class="hc-row"><span class="hc-key">Start</span><span>Nov 28</span></div>
+            <div class="hc-sabbat-row"><span class="hc-key">Sabbat</span><span class="hc-sabbat-date">Dec 21</span></div>
+            <div class="hc-row"><span class="hc-key">End</span><span>Jan 11, 2027</span></div>
+            <div class="hc-row"><span class="hc-key">Days</span><span>44 total · 23 | 21</span></div>
+            <div class="hc-trad">Traditional: Dec 25 (Yule/Christmas) — in Falling</div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <p>Astronomical · Hybrid System · C.K. · 2019 / 2026 revision</p>
+        <p style="margin-top:8px;">Cross-quarters calculated as exact midpoints between solstices and equinoxes · Traditional dates noted for cultural resonance</p>
+        <div style="margin-top:2rem; padding-top:1.5rem; border-top:1px solid rgba(255,255,255,0.08); display:flex; justify-content:center;">
+          <a href="https://nullpointdesign.github.io" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; flex-wrap:wrap; justify-content:center; text-decoration:none; font-family:'DM Mono',monospace;">
+            <span style="color:rgba(244,238,216,0.5); font-size:0.75rem; letter-spacing:0.03em; font-weight:300;">Site Design by</span>
+            <span style="color:rgba(244,238,216,0.8); margin-left:6px; margin-right:6px; font-size:0.75rem; font-weight:400; letter-spacing:0.03em;">Catherine Anderson</span>
+            <span style="color:rgba(244,238,216,0.5); font-size:0.75rem; letter-spacing:0.03em; font-weight:300;">for</span>
+            <span style="background-color:rgba(255,255,255,0.06); padding:4px 10px; border:1px solid rgba(255,255,255,0.2); display:inline-block; line-height:1; margin-left:10px; transition:all 0.1s ease; box-shadow:4px 4px 0px rgba(255,255,255,0.1);">
+              <span style="color:rgba(244,238,216,0.8); font-size:0.7rem; text-transform:uppercase; letter-spacing:0.15em;">Null Point Design</span>
+            </span>
+          </a>
+        </div>
+    </div>
+
+</div>
+
+<script>
+// ─── DATE UTILITIES ───────────────────────────────────────────────────────────
+
+function dayOfYear(date) {
+    const start = new Date(date.getFullYear(), 0, 0);
+    const diff = date - start;
+    const oneDay = 1000 * 60 * 60 * 24;
+    return Math.floor(diff / oneDay);
+}
+
+function formatDate(date) {
+    return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+}
+
+function formatDateShort(date) {
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+// ─── ASTRONOMICAL SABBAT CALCULATION ─────────────────────────────────────────
+// Anchor: solstices and equinoxes, cross-quarters as exact midpoints
+
+function getSabbats(year) {
+    // Standard astronomical dates (±1 day depending on year)
+    const yule_prev = new Date(year - 1, 11, 21);
+    const imbolc_anchor1 = new Date(year - 1, 11, 21); // prev Yule
+    const ostara  = new Date(year, 2, 20);
+    const litha   = new Date(year, 5, 21);
+    const mabon   = new Date(year, 8, 22);
+    const yule    = new Date(year, 11, 21);
+
+    function midpoint(d1, d2) {
+        return new Date((d1.getTime() + d2.getTime()) / 2);
+    }
+
+    const imbolc  = midpoint(yule_prev, ostara);
+    const beltane = midpoint(ostara, litha);
+    const lammas  = midpoint(litha, mabon);
+    const samhain = midpoint(mabon, yule);
+
+    return [
+        { name: 'Yule',    sabbat: yule_prev, next_sabbat: imbolc,  color: '#2a4a6a', altNames: ['The Bottom of the Year', 'The Quiet Time', 'Peace'], traditional: 'Dec 25 (Christmas) — falls in Falling phase' },
+        { name: 'Imbolc',  sabbat: imbolc,  next_sabbat: ostara,  color: '#b8c9e8', altNames: ['First Light', 'Dawn', 'Flickering Candle'], traditional: 'Feb 2 (Candlemas)' },
+        { name: 'Ostara',  sabbat: ostara,  next_sabbat: beltane, color: '#7aab6e', altNames: ['Pastel Bunnies', 'Easter', 'The Rising Light', 'Sunrise'], traditional: 'Spring Equinox · Easter (varies)' },
+        { name: 'Beltane', sabbat: beltane, next_sabbat: litha,   color: '#e87a3a', altNames: ['Brightness', 'Increase', 'The Infernal Brightening'], traditional: 'May 1 (May Day)' },
+        { name: 'Litha',   sabbat: litha,   next_sabbat: lammas,  color: '#f5c842', altNames: ['Peak', 'Floodlight', 'The Roof of the Year', 'Cresting the Wave'], traditional: 'Summer Solstice · Jul 4' },
+        { name: 'Lammas',  sabbat: lammas,  next_sabbat: mabon,   color: '#c87820', altNames: ['Reversal', 'Swim Party', 'The First Signs of Darkness'], traditional: 'Aug 1 (First Harvest)' },
+        { name: 'Mabon',   sabbat: mabon,   next_sabbat: samhain, color: '#c84820', altNames: ['Joy', 'Gathering Joy', 'Harvest Gold', 'Twilight'], traditional: 'Fall Equinox' },
+        { name: 'Samhain', sabbat: samhain, next_sabbat: yule,    color: '#5a3a8a', altNames: ['Darkening', 'Dark Harvest', 'The Happy Time'], traditional: 'Oct 31 (Halloween) — falls in Rising phase' },
+    ];
+}
+
+function midnight(d) {
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+}
+
+function getHouseBounds(sabbats, idx) {
+    const prev = sabbats[(idx - 1 + sabbats.length) % sabbats.length];
+    const curr = sabbats[idx];
+    const start = midnight(new Date((prev.sabbat.getTime() + curr.sabbat.getTime()) / 2));
+    const end   = midnight(new Date((curr.sabbat.getTime() + curr.next_sabbat.getTime()) / 2));
+    const sabbat = midnight(curr.sabbat);
+    return { start, sabbat, end };
+}
+
+function getCurrentHouse(today) {
+    const todayMid = midnight(today);
+    const year = today.getFullYear();
+    // Try this year's sabbats, and also check prev year's Yule house (Jan)
+    for (let y = year - 1; y <= year; y++) {
+        const sabbats = getSabbats(y);
+        for (let i = 0; i < sabbats.length; i++) {
+            const bounds = getHouseBounds(sabbats, i);
+            if (todayMid >= bounds.start && todayMid < bounds.end) {
+                const totalDays = Math.round((bounds.end - bounds.start) / 86400000);
+                const dayIn = Math.round((todayMid - bounds.start) / 86400000) + 1;
+                const daysToSabbat = Math.round((bounds.sabbat - today) / 86400000);
+                const isRising = today < bounds.sabbat;
+                const phaseStart = isRising ? bounds.start : bounds.sabbat;
+                const phaseEnd = isRising ? bounds.sabbat : bounds.end;
+                const phaseDays = Math.round((phaseEnd - phaseStart) / 86400000);
+                const phaseDay = Math.round((today - phaseStart) / 86400000) + 1;
+                const progressPct = (dayIn / totalDays) * 100;
+                const sabbatPct = Math.round(((bounds.sabbat - bounds.start) / (bounds.end - bounds.start)) * 100);
+                const nextIdx = (i + 1) % sabbats.length;
+                const nextHouse = sabbats[nextIdx].name;
+                return {
+                    house: sabbats[i],
+                    bounds,
+                    totalDays,
+                    dayIn,
+                    daysToSabbat,
+                    isRising,
+                    phaseDay,
+                    phaseDays,
+                    progressPct,
+                    sabbatPct,
+                    nextHouse,
+                };
+            }
+        }
+    }
+    return null;
+}
+
+// ─── WHEEL DRAWING ────────────────────────────────────────────────────────────
+
+function dayToAngle(date, referenceYear) {
+    // 0° = top = Yule (Dec 21)
+    const yule = new Date(referenceYear, 11, 21);
+    const msPerYear = 365.25 * 24 * 3600 * 1000;
+    const diffMs = date.getTime() - yule.getTime();
+    return (diffMs / msPerYear) * 360;
+}
+
+function polarToCart(cx, cy, r, angleDeg) {
+    const rad = (angleDeg - 90) * Math.PI / 180;
+    return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+}
+
+function arcPath(cx, cy, r, startAngle, endAngle) {
+    const s = polarToCart(cx, cy, r, startAngle);
+    const e = polarToCart(cx, cy, r, endAngle);
+    const large = ((endAngle - startAngle + 360) % 360) > 180 ? 1 : 0;
+    return `M ${cx} ${cy} L ${s.x} ${s.y} A ${r} ${r} 0 ${large} 1 ${e.x} ${e.y} Z`;
+}
+
+function el(NS, tag, attrs) {
+    const e = document.createElementNS(NS, tag);
+    Object.entries(attrs).forEach(([k, v]) => e.setAttribute(k, v));
+    return e;
+}
+
+function buildWheel(svgEl, cx, cy, outerR, todayDate, highlightColor, referenceYear) {
+    const NS = 'http://www.w3.org/2000/svg';
+    svgEl.innerHTML = '';
+
+    const sabbats = getSabbats(referenceYear);
+
+    svgEl.appendChild(el(NS, 'circle', { cx, cy, r: outerR, fill: 'rgba(255,255,255,0.03)', stroke: 'rgba(255,255,255,0.08)', 'stroke-width': 1 }));
+
+    sabbats.forEach((h, i) => {
+        const bounds = getHouseBounds(sabbats, i);
+        const startAng = dayToAngle(bounds.start, referenceYear);
+        const endAng   = dayToAngle(bounds.end, referenceYear);
+        const span = ((endAng - startAng + 360) % 360) || 45;
+
+        // Segment
+        const seg = document.createElementNS(NS, 'path');
+        seg.setAttribute('d', arcPath(cx, cy, outerR * 0.78, startAng, startAng + span));
+        seg.setAttribute('fill', h.color);
+        seg.setAttribute('opacity', '0.18');
+        svgEl.appendChild(seg);
+
+        // Boundary line
+        const sp = polarToCart(cx, cy, outerR * 0.82, startAng);
+        svgEl.appendChild(el(NS, 'line', { x1: cx, y1: cy, x2: sp.x, y2: sp.y, stroke: 'rgba(255,255,255,0.12)', 'stroke-width': 0.5 }));
+
+        // Sabbat tick
+        const sAng = dayToAngle(h.sabbat, referenceYear);
+        const tp1 = polarToCart(cx, cy, outerR * 0.80, sAng);
+        const tp2 = polarToCart(cx, cy, outerR * 0.90, sAng);
+        svgEl.appendChild(el(NS, 'line', { x1: tp1.x, y1: tp1.y, x2: tp2.x, y2: tp2.y, stroke: h.color, 'stroke-width': outerR > 150 ? 2 : 1.5 }));
+
+        // Sabbat dot
+        const dp = polarToCart(cx, cy, outerR * 0.855, sAng);
+        svgEl.appendChild(el(NS, 'circle', { cx: dp.x, cy: dp.y, r: outerR > 150 ? 4 : 3, fill: h.color }));
+
+        // House name (large wheel only)
+        if (outerR > 150) {
+            const midAng = startAng + span * 0.35;
+            const np = polarToCart(cx, cy, outerR * 0.60, midAng);
+            const txt = document.createElementNS(NS, 'text');
+            txt.setAttribute('x', np.x); txt.setAttribute('y', np.y);
+            txt.setAttribute('text-anchor', 'middle');
+            txt.setAttribute('dominant-baseline', 'middle');
+            txt.setAttribute('fill', h.color);
+            txt.setAttribute('font-family', 'Cinzel, serif');
+            txt.setAttribute('font-size', '9');
+            txt.setAttribute('opacity', '0.9');
+            txt.textContent = h.name.toUpperCase();
+            svgEl.appendChild(txt);
+        }
+    });
+
+    // Rings
+    svgEl.appendChild(el(NS, 'circle', { cx, cy, r: outerR * 0.82, fill: 'none', stroke: 'rgba(200,147,10,0.3)', 'stroke-width': 1 }));
+    svgEl.appendChild(el(NS, 'circle', { cx, cy, r: outerR * 0.25, fill: 'rgba(0,0,0,0.4)', stroke: 'rgba(200,147,10,0.2)', 'stroke-width': 1 }));
+
+    // Today needle
+    const todayAng = dayToAngle(todayDate, referenceYear);
+    const nOuter = polarToCart(cx, cy, outerR * 0.88, todayAng);
+    const nInner = polarToCart(cx, cy, outerR * 0.26, todayAng);
+    const glow = el(NS, 'circle', { cx: nOuter.x, cy: nOuter.y, r: outerR > 150 ? 10 : 7, fill: highlightColor || '#e8b84b', opacity: 0.15 });
+    svgEl.appendChild(glow);
+    svgEl.appendChild(el(NS, 'line', { x1: nInner.x, y1: nInner.y, x2: nOuter.x, y2: nOuter.y, stroke: highlightColor || '#e8b84b', 'stroke-width': outerR > 150 ? 2.5 : 2, 'stroke-linecap': 'round' }));
+    svgEl.appendChild(el(NS, 'circle', { cx: nOuter.x, cy: nOuter.y, r: outerR > 150 ? 5 : 4, fill: highlightColor || '#e8b84b', stroke: '#1c1a14', 'stroke-width': 1.5 }));
+    svgEl.appendChild(el(NS, 'circle', { cx, cy, r: 3, fill: 'rgba(200,147,10,0.6)' }));
+
+    // Cardinal labels (large wheel only)
+    if (outerR > 150) {
+        [['YULE', 0], ['OSTARA', 90], ['LITHA', 180], ['MABON', 270]].forEach(([label, angle]) => {
+            const p = polarToCart(cx, cy, outerR * 0.96, angle);
+            const t = document.createElementNS(NS, 'text');
+            t.setAttribute('x', p.x); t.setAttribute('y', p.y);
+            t.setAttribute('text-anchor', 'middle'); t.setAttribute('dominant-baseline', 'middle');
+            t.setAttribute('fill', 'rgba(200,147,10,0.5)'); t.setAttribute('font-family', 'DM Mono, monospace');
+            t.setAttribute('font-size', '7'); t.setAttribute('letter-spacing', '1');
+            t.textContent = label;
+            svgEl.appendChild(t);
+        });
+    }
+}
+
+// ─── POPULATE TODAY CARD ──────────────────────────────────────────────────────
+
+function populateTodayCard(info, today) {
+    const h = info.house;
+    const b = info.bounds;
+
+    document.getElementById('wheelLabel').textContent = `Today's Position · ${formatDate(today)}`;
+    document.getElementById('tcHouse').textContent = `House of ${h.name}`;
+    document.getElementById('tcPhase').textContent = `${info.isRising ? 'Rising' : 'Falling'} · Day ${info.dayIn} of ${info.totalDays} · ${lightCount}`;
+
+    const sabbatDateEl = document.getElementById('tcSabbatDate');
+    sabbatDateEl.textContent = formatDate(b.sabbat);
+    sabbatDateEl.style.color = h.color;
+
+    document.getElementById('tcSabbatNote').textContent =
+        info.daysToSabbat > 0 ? `${info.daysToSabbat} days away` :
+        info.daysToSabbat === 0 ? '✦ Today is the Sabbat' : `${Math.abs(info.daysToSabbat)} days past`;
+
+    document.getElementById('tcHouseEnd').textContent = formatDate(b.end);
+    document.getElementById('tcNextHouse').textContent = `→ House of ${info.nextHouse}`;
+    document.getElementById('tcPhaseProgress').textContent = `${info.phaseDay} / ${info.phaseDays}`;
+    document.getElementById('tcPhaseLabel').textContent = `days into ${info.isRising ? 'Rising' : 'Falling'}`;
+    document.getElementById('tcDayOfYear').textContent = `Day ${dayOfYear(today)}`;
+
+    document.getElementById('progressStart').textContent = `Start · ${formatDateShort(b.start)}`;
+    document.getElementById('progressEnd').textContent = formatDateShort(b.end);
+    document.getElementById('progressSabbat').style.left = `${info.sabbatPct}%`;
+    document.getElementById('progressFill').style.width = `${info.progressPct}%`;
+    document.getElementById('progressFill').style.background = `linear-gradient(90deg, ${h.color}, var(--gold-light))`;
+    document.getElementById('sabbatLabel').textContent = `↑ ${h.name} Sabbat · ${formatDateShort(b.sabbat)}`;
+
+    const altContainer = document.getElementById('altTags');
+    altContainer.innerHTML = h.altNames.map(n => `<span class="alt-tag">${n}</span>`).join('');
+
+    // Highlight current house card
+    document.querySelectorAll('.house-card').forEach(card => card.classList.remove('current'));
+    const currentCard = document.querySelector(`.house-card.${h.name.toLowerCase()}`);
+    if (currentCard) {
+        currentCard.classList.add('current');
+        const badge = document.createElement('div');
+        badge.className = 'current-badge';
+        badge.textContent = 'NOW';
+        currentCard.appendChild(badge);
+    }
+}
+
+// ─── INCREASE / DECREASE COUNT ───────────────────────────────────────────────
+
+function getLightCount(date) {
+    const d = midnight(date);
+    const year = d.getFullYear();
+    const yule      = midnight(new Date(year - 1, 11, 21));
+    const litha     = midnight(new Date(year, 5, 21));
+    const yule_next = midnight(new Date(year, 11, 21));
+
+    const msDay = 86400000;
+
+    if (d >= yule && d < litha) {
+        const count = Math.floor((d - yule) / msDay) + 1;
+        return `Increase ${count}`;
+    } else if (d >= litha && d < yule_next) {
+        const count = Math.floor((d - litha) / msDay) + 1;
+        return `Decrease ${count}`;
+    } else {
+        const count = Math.floor((d - yule_next) / msDay) + 1;
+        return `Increase ${count}`;
+    }
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+
+const today = new Date();
+const refYear = today.getFullYear();
+const lightCount = getLightCount(today);
+
+// Update header subtitle
+document.querySelector('.header .sub').textContent =
+    `Astronomical · ${refYear} · Sabbatical Houses · ${lightCount}`;
+
+const info = getCurrentHouse(today);
+
+// Main wheel
+buildWheel(document.getElementById('mainWheel'), 210, 210, 195, today, info ? info.house.color : '#e8b84b', refYear);
+
+// Populate card
+if (info) populateTodayCard(info, today);
+
+// ─── MINI WHEELS — CUSTOMIZABLE WITH LOCALSTORAGE ────────────────────────────
+
+const STORAGE_KEY = 'wheelOfYear_miniDates';
+
+function dateToInputString(date) {
+    if (!date) return '';
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+}
+
+// Compute next three sabbats from today
+function getNextSabbats(n) {
+    const results = [];
+    // Check this year and next to get enough future sabbats
+    for (let yr = today.getFullYear(); yr <= today.getFullYear() + 2 && results.length < n; yr++) {
+        const sabbats = getSabbats(yr);
+        for (const s of sabbats) {
+            if (s.sabbat > today && results.length < n) {
+                results.push(s);
+            }
+        }
+    }
+    return results;
+}
+
+const nextSabbats = getNextSabbats(3);
+
+const defaultMinis = [
+    { label: 'Today', date: null, sublabel: null, locked: true },
+    ...nextSabbats.map(s => ({
+        label: s.name + ' Sabbat',
+        date: dateToInputString(s.sabbat),
+        sublabel: null,
+        locked: false,
+    })),
+];
+
+function loadMinis() {
+    try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (!saved) return defaultMinis.map(d => ({...d}));
+        const parsed = JSON.parse(saved);
+        // Merge: always keep slot 0 as Today (locked)
+        return defaultMinis.map((def, i) => {
+            if (def.locked) return {...def};
+            return parsed[i] ? {...def, label: parsed[i].label || def.label, date: parsed[i].date || def.date, sublabel: parsed[i].sublabel || def.sublabel} : {...def};
+        });
+    } catch(e) { return defaultMinis.map(d => ({...d})); }
+}
+
+function saveMinis(minis) {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(
+            minis.map(m => ({ label: m.label, date: m.date, sublabel: m.sublabel }))
+        ));
+    } catch(e) {}
+}
+
+function dateFromString(str) {
+    if (!str) return null;
+    const [y, m, d] = str.split('-').map(Number);
+    return new Date(y, m - 1, d);
+}
+
+function renderMiniWheels(minis) {
+    const container = document.getElementById('miniWheelsContainer');
+    container.innerHTML = '';
+
+    minis.forEach((cfg, i) => {
+        const wrap = document.createElement('div');
+        wrap.className = 'mini-wheel-wrap';
+
+        const isToday = cfg.locked;
+        const dateObj = isToday ? today : (cfg.date ? dateFromString(cfg.date) : null);
+
+        // Determine house info and color
+        let color = '#e8b84b';
+        let sublabelText = cfg.sublabel || '';
+        if (dateObj) {
+            const hInfo = getCurrentHouse(dateObj);
+            if (hInfo) {
+                color = hInfo.house.color;
+                if (isToday || !cfg.sublabel) {
+                    sublabelText = `${formatDateShort(dateObj)} · ${hInfo.house.name} ${hInfo.isRising ? 'Rising' : 'Falling'} ${hInfo.dayIn}`;
+                }
+            }
+        }
+
+        // Label
+        const labelEl = document.createElement('div');
+        labelEl.className = 'mini-label';
+        labelEl.textContent = cfg.label;
+
+        // SVG wheel
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('width', '180'); svg.setAttribute('height', '180');
+        svg.setAttribute('viewBox', '0 0 180 180');
+        svg.classList.add('miniWheel');
+        if (dateObj) {
+            buildWheel(svg, 90, 90, 82, dateObj, color, dateObj.getFullYear());
+        }
+
+        // For non-Today wheels, add a faint today needle
+        if (!isToday && dateObj) {
+            const NS = 'http://www.w3.org/2000/svg';
+            const todayAng = dayToAngle(today, dateObj.getFullYear());
+            const nOuter = polarToCart(90, 90, 82 * 0.88, todayAng);
+            const nInner = polarToCart(90, 90, 82 * 0.26, todayAng);
+            const ghostLine = document.createElementNS(NS, 'line');
+            ghostLine.setAttribute('x1', nInner.x); ghostLine.setAttribute('y1', nInner.y);
+            ghostLine.setAttribute('x2', nOuter.x); ghostLine.setAttribute('y2', nOuter.y);
+            ghostLine.setAttribute('stroke', 'rgba(244,238,216,0.25)');
+            ghostLine.setAttribute('stroke-width', '1.5');
+            ghostLine.setAttribute('stroke-linecap', 'round');
+            ghostLine.setAttribute('stroke-dasharray', '3,3');
+            svg.appendChild(ghostLine);
+            const ghostDot = document.createElementNS(NS, 'circle');
+            ghostDot.setAttribute('cx', nOuter.x); ghostDot.setAttribute('cy', nOuter.y);
+            ghostDot.setAttribute('r', '3');
+            ghostDot.setAttribute('fill', 'rgba(244,238,216,0.35)');
+            ghostDot.setAttribute('stroke', 'rgba(244,238,216,0.2)');
+            ghostDot.setAttribute('stroke-width', '1');
+            svg.appendChild(ghostDot);
+        }
+
+        // Sublabel / date display
+        const dateEl = document.createElement('div');
+        dateEl.className = 'mini-date';
+        dateEl.textContent = sublabelText;
+
+        wrap.appendChild(labelEl);
+        wrap.appendChild(svg);
+        wrap.appendChild(dateEl);
+
+        // Edit button + form (not for Today)
+        if (!isToday) {
+            const editBtn = document.createElement('button');
+            editBtn.className = 'mini-edit-btn';
+            editBtn.textContent = '✦ customize';
+
+            const form = document.createElement('div');
+            form.className = 'mini-customize';
+            form.style.display = 'none';
+
+            const labelInput = document.createElement('input');
+            labelInput.type = 'text';
+            labelInput.placeholder = 'Label (e.g. Wheels Up)';
+            labelInput.value = cfg.label;
+            labelInput.maxLength = 30;
+
+            const dateInput = document.createElement('input');
+            dateInput.type = 'date';
+            dateInput.value = cfg.date || '';
+
+            const noteInput = document.createElement('input');
+            noteInput.type = 'text';
+            noteInput.placeholder = 'Note (e.g. May 1 · Beltane)';
+            noteInput.value = cfg.sublabel || '';
+            noteInput.maxLength = 40;
+
+            const saveBtn = document.createElement('button');
+            saveBtn.className = 'mini-edit-btn';
+            saveBtn.textContent = '✦ save';
+
+            const resetBtn = document.createElement('button');
+            resetBtn.className = 'mini-edit-btn';
+            resetBtn.textContent = '✦ reset to default';
+            resetBtn.style.opacity = '0.6';
+
+            form.appendChild(labelInput);
+            form.appendChild(dateInput);
+            form.appendChild(noteInput);
+            form.appendChild(saveBtn);
+            form.appendChild(resetBtn);
+
+            editBtn.addEventListener('click', () => {
+                const showing = form.style.display !== 'none';
+                form.style.display = showing ? 'none' : 'flex';
+                editBtn.textContent = showing ? '✦ customize' : '✦ cancel';
+            });
+
+            saveBtn.addEventListener('click', () => {
+                const newLabel = labelInput.value.trim() || cfg.label;
+                const newDate  = dateInput.value || cfg.date;
+                const newNote  = noteInput.value.trim();
+
+                minis[i].label = newLabel;
+                minis[i].date  = newDate;
+                minis[i].sublabel = newNote || null;
+
+                saveMinis(minis);
+                renderMiniWheels(minis);
+            });
+
+            resetBtn.addEventListener('click', () => {
+                const def = defaultMinis[i];
+                minis[i].label    = def.label;
+                minis[i].date     = def.date;
+                minis[i].sublabel = def.sublabel;
+                saveMinis(minis);
+                renderMiniWheels(minis);
+            });
+
+            wrap.appendChild(editBtn);
+            wrap.appendChild(form);
+        }
+
+        container.appendChild(wrap);
+    });
+}
+
+// Init mini wheels
+const minis = loadMinis();
+renderMiniWheels(minis);
+</script>
+</body>
+</html>
