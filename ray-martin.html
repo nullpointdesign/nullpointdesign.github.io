@@ -471,15 +471,52 @@ footer a:hover,
 }
 
 @media (max-width:768px) {
-  nav { padding:1rem 1.5rem; }
-  .nav-links { display:none; }
-  .hero { grid-template-columns:1fr; }
-  .hero-photo-col { display:none; }
-  .about { grid-template-columns:1fr; padding:4rem 2rem; }
-  .contact-grid { grid-template-columns:1fr; }
-  footer { flex-direction:column; gap:2.5rem; padding:4rem 2rem; text-align:center; }
+  /* 1. On réduit les paddings globaux pour gagner de la place */
+  nav { padding: 1rem 1.5rem; }
+  .hero-text-col { padding: 6rem 1.5rem 3rem; } /* Moins de padding sur les côtés */
+  .about, .music, .shows, .contact, footer { 
+    padding-left: 1.5rem !important; 
+    padding-right: 1.5rem !important; 
+  }
+
+  /* 2. On ajuste la typographie du nom pour qu'elle ne déborde pas */
+  .hero-name .first, .hero-name .last {
+    font-size: clamp(3.5rem, 15vw, 5rem); /* Plus petit sur portable */
+  }
+
+  /* 3. On passe les grilles en une seule colonne */
+  .about { 
+    grid-template-columns: 1fr; 
+    gap: 2rem; 
+  }
+  .contact-grid { 
+    grid-template-columns: 1fr; 
+    gap: 1rem;
+  }
+
+  /* 4. On gère la liste des concerts pour qu'elle reste lisible */
+  .show {
+    grid-template-columns: 60px 1fr; /* On réduit la colonne date */
+    gap: 1rem;
+  }
+  .show-date .dy { font-size: 2.2rem; } /* Date plus petite */
+  .show-tix { display: none; } /* On cache le bouton tickets sur mobile pour épurer, ou on le met en dessous */
+
+  /* 5. On s'assure que le disque (vinyl) ne crée pas de scroll horizontal */
+  .vinyl {
+    width: 120px; height: 120px;
+    top: 1rem; right: -30px; /* On le décale un peu hors écran */
+  }
+
+  /* 6. Footer : on empile les éléments */
+  footer {
+    flex-direction: column;
+    text-align: center;
+    gap: 2rem;
+  }
   .footer-credits { align-items: center; }
 }
+
 </style>
 </head>
 <body>
