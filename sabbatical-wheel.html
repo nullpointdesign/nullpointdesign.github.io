@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wheel of the Year · 2026</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Mono:wght@300;400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Mono:wght@300;400&family=Inter:wght@300;400&display=swap');
 
         :root {
             --ink: #1c1a14;
@@ -536,14 +536,14 @@
                     <div class="stat-note" id="tcNextHouse">—</div>
                 </div>
                 <div class="tc-stat">
-                    <div class="stat-label">Phase Progress</div>
+                    <div class="stat-label">Current Time</div>
                     <div class="stat-value" id="tcPhaseProgress">—</div>
                     <div class="stat-note" id="tcPhaseLabel">—</div>
                 </div>
                 <div class="tc-stat">
-                    <div class="stat-label">Year Position</div>
+                    <div class="stat-label">Year Clock</div>
                     <div class="stat-value" id="tcDayOfYear">—</div>
-                    <div class="stat-note">of 365</div>
+                    <div class="stat-note" id="tcYearClockNote">of 365</div>
                 </div>
             </div>
 
@@ -571,7 +571,7 @@
     <div class="divider">✦ ✦ ✦</div>
 
     <!-- MINI WHEELS: SAMPLE MOMENTS -->
-    <div class="mini-wheels-title">Sample Positions · Selected Dates</div>
+    <div class="mini-wheels-title">Selected Dates</div>
     <div class="mini-wheels" id="miniWheelsContainer">
         <!-- mini wheels rendered by JS -->
     </div>
@@ -676,16 +676,6 @@
     <div class="footer">
         <p>Astronomical · Hybrid System · C.K. · 2019 / 2026 revision</p>
         <p style="margin-top:8px;">Cross-quarters calculated as exact midpoints between solstices and equinoxes · Traditional dates noted for cultural resonance</p>
-        <div style="margin-top:2rem; padding-top:1.5rem; border-top:1px solid rgba(255,255,255,0.08); display:flex; justify-content:center;">
-          <a href="https://nullpointdesign.github.io" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; flex-wrap:wrap; justify-content:center; text-decoration:none; font-family:'DM Mono',monospace;">
-            <span style="color:rgba(244,238,216,0.5); font-size:0.75rem; letter-spacing:0.03em; font-weight:300;">Site Design by</span>
-            <span style="color:rgba(244,238,216,0.8); margin-left:6px; margin-right:6px; font-size:0.75rem; font-weight:400; letter-spacing:0.03em;">Catherine Anderson</span>
-            <span style="color:rgba(244,238,216,0.5); font-size:0.75rem; letter-spacing:0.03em; font-weight:300;">for</span>
-            <span style="background-color:rgba(255,255,255,0.06); padding:4px 10px; border:1px solid rgba(255,255,255,0.2); display:inline-block; line-height:1; margin-left:10px; transition:all 0.1s ease; box-shadow:4px 4px 0px rgba(255,255,255,0.1);">
-              <span style="color:rgba(244,238,216,0.8); font-size:0.7rem; text-transform:uppercase; letter-spacing:0.15em;">Null Point Design</span>
-            </span>
-          </a>
-        </div>
     </div>
 
 </div>
@@ -909,7 +899,9 @@ function populateTodayCard(info, today) {
     const h = info.house;
     const b = info.bounds;
 
-    document.getElementById('wheelLabel').textContent = `Today's Position · ${formatDate(today)}`;
+    const doy = dayOfYear(today);
+
+    document.getElementById('wheelLabel').textContent = `Today's Position · ${formatDate(today)} · Day ${doy}`;
     document.getElementById('tcHouse').textContent = `House of ${h.name}`;
     document.getElementById('tcPhase').textContent = `${info.isRising ? 'Rising' : 'Falling'} · Day ${info.dayIn} of ${info.totalDays} · ${lightCount}`;
 
@@ -923,11 +915,10 @@ function populateTodayCard(info, today) {
 
     document.getElementById('tcHouseEnd').textContent = formatDate(b.end);
     document.getElementById('tcNextHouse').textContent = `→ House of ${info.nextHouse}`;
-    document.getElementById('tcPhaseProgress').textContent = `${info.phaseDay} / ${info.phaseDays}`;
-    document.getElementById('tcPhaseLabel').textContent = `days into ${info.isRising ? 'Rising' : 'Falling'}`;
-    document.getElementById('tcDayOfYear').textContent = `Day ${dayOfYear(today)}`;
+    document.getElementById('tcPhaseProgress').textContent = `—`; // filled by clock interval
+    document.getElementById('tcPhaseLabel').textContent = `—`;    // filled by clock interval
 
-    document.getElementById('progressStart').textContent = `Start · ${formatDateShort(b.start)}`;
+    document.getElementById('progressStart').textContent = formatDateShort(b.start);
     document.getElementById('progressEnd').textContent = formatDateShort(b.end);
     document.getElementById('progressSabbat').style.left = `${info.sabbatPct}%`;
     document.getElementById('progressFill').style.width = `${info.progressPct}%`;
@@ -990,6 +981,83 @@ buildWheel(document.getElementById('mainWheel'), 210, 210, 195, today, info ? in
 // Populate card
 if (info) populateTodayCard(info, today);
 
+// ── CLOCK IN CENTER HUB ──────────────────────────────────
+(function() {
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const mainSvg = document.getElementById('mainWheel');
+
+    const clockCircle = document.createElementNS(svgNS, 'circle');
+    clockCircle.setAttribute('cx', 210);
+    clockCircle.setAttribute('cy', 210);
+    clockCircle.setAttribute('r', 32);
+    clockCircle.setAttribute('fill', '#000');
+    clockCircle.setAttribute('stroke', 'rgba(122,171,110,0.5)');
+    clockCircle.setAttribute('stroke-width', '1');
+    mainSvg.appendChild(clockCircle);
+
+    // Phase text (top line) and arrow (bottom line) in hub
+    const phaseText = document.createElementNS(svgNS, 'text');
+    phaseText.setAttribute('x', 210);
+    phaseText.setAttribute('y', 206);
+    phaseText.setAttribute('text-anchor', 'middle');
+    phaseText.setAttribute('dominant-baseline', 'middle');
+    phaseText.setAttribute('fill', 'rgba(122,171,110,0.75)');
+    phaseText.setAttribute('font-family', 'DM Mono, monospace');
+    phaseText.setAttribute('font-size', '11');
+    phaseText.setAttribute('font-weight', '300');
+    mainSvg.appendChild(phaseText);
+
+    const arrowText = document.createElementNS(svgNS, 'text');
+    arrowText.setAttribute('x', 210);
+    arrowText.setAttribute('y', 221);
+    arrowText.setAttribute('text-anchor', 'middle');
+    arrowText.setAttribute('dominant-baseline', 'middle');
+    arrowText.setAttribute('fill', 'rgba(122,171,110,0.5)');
+    arrowText.setAttribute('font-family', 'DM Mono, monospace');
+    arrowText.setAttribute('font-size', '10');
+    mainSvg.appendChild(arrowText);
+
+    function updateClock() {
+        const now = new Date();
+
+        // ── Hub: phase day / total + arrow ──
+        const houseInfo = getCurrentHouse(now);
+        if (houseInfo) {
+            phaseText.textContent = `${houseInfo.phaseDay}/${houseInfo.phaseDays}`;
+            arrowText.textContent = houseInfo.isRising ? '↑' : '↓';
+        }
+
+        // ── Current Time stat (wall clock) ──
+        const rawH = now.getHours();
+        const mm = String(now.getMinutes()).padStart(2, '0');
+        const ap = rawH < 12 ? 'am' : 'pm';
+        const h12 = rawH % 12 || 12;
+        const ctEl = document.getElementById('tcPhaseProgress');
+        const ctNoteEl = document.getElementById('tcPhaseLabel');
+        if (ctEl) ctEl.innerHTML = `<span style="color:#7aab6e;text-shadow:0 0 8px rgba(122,171,110,0.6);font-family:'Inter',sans-serif;font-weight:300;letter-spacing:2px;">${h12}:${mm}<span style="font-size:13px;">${ap}</span></span>`;
+        if (ctNoteEl) ctNoteEl.textContent = now.toLocaleDateString('en-US', { weekday: 'long' });
+
+        // ── Year clock (live, advances in real time) ──
+        const startOfYear = new Date(now.getFullYear(), 0, 1, 0, 0, 0);
+        const secondsElapsed = (now - startOfYear) / 1000;
+        const secondsInYear = 365 * 24 * 3600;
+        const yearHoursTotal = (secondsElapsed / secondsInYear) * 24;
+        const ycH = Math.floor(yearHoursTotal);
+        const ycM = Math.floor((yearHoursTotal - ycH) * 60);
+        const ampm = ycH < 12 ? 'am' : 'pm';
+        const ycH12 = ycH % 12 || 12;
+        const yearClockStr = `<span style="color:#7aab6e;text-shadow:0 0 8px rgba(122,171,110,0.6);font-family:'Inter',sans-serif;font-weight:300;letter-spacing:2px;">${ycH12}:${String(ycM).padStart(2,'0')}<span style="font-size:13px;">${ampm}</span></span>`;
+        const ycNote = `day ${dayOfYear(now)} of 365`;
+
+        const ycEl = document.getElementById('tcDayOfYear');
+        const ycNoteEl = document.getElementById('tcYearClockNote');
+        if (ycEl) ycEl.innerHTML = yearClockStr;
+        if (ycNoteEl) ycNoteEl.textContent = ycNote;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+})();
+
 // ─── MINI WHEELS — CUSTOMIZABLE WITH LOCALSTORAGE ────────────────────────────
 
 const STORAGE_KEY = 'wheelOfYear_miniDates';
@@ -1005,7 +1073,6 @@ function dateToInputString(date) {
 // Compute next three sabbats from today
 function getNextSabbats(n) {
     const results = [];
-    // Check this year and next to get enough future sabbats
     for (let yr = today.getFullYear(); yr <= today.getFullYear() + 2 && results.length < n; yr++) {
         const sabbats = getSabbats(yr);
         for (const s of sabbats) {
@@ -1034,7 +1101,6 @@ function loadMinis() {
         const saved = localStorage.getItem(STORAGE_KEY);
         if (!saved) return defaultMinis.map(d => ({...d}));
         const parsed = JSON.parse(saved);
-        // Merge: always keep slot 0 as Today (locked)
         return defaultMinis.map((def, i) => {
             if (def.locked) return {...def};
             return parsed[i] ? {...def, label: parsed[i].label || def.label, date: parsed[i].date || def.date, sublabel: parsed[i].sublabel || def.sublabel} : {...def};
@@ -1067,7 +1133,6 @@ function renderMiniWheels(minis) {
         const isToday = cfg.locked;
         const dateObj = isToday ? today : (cfg.date ? dateFromString(cfg.date) : null);
 
-        // Determine house info and color
         let color = '#e8b84b';
         let sublabelText = cfg.sublabel || '';
         if (dateObj) {
@@ -1080,12 +1145,10 @@ function renderMiniWheels(minis) {
             }
         }
 
-        // Label
         const labelEl = document.createElement('div');
         labelEl.className = 'mini-label';
         labelEl.textContent = cfg.label;
 
-        // SVG wheel
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.setAttribute('width', '180'); svg.setAttribute('height', '180');
         svg.setAttribute('viewBox', '0 0 180 180');
@@ -1094,7 +1157,6 @@ function renderMiniWheels(minis) {
             buildWheel(svg, 90, 90, 82, dateObj, color, dateObj.getFullYear());
         }
 
-        // For non-Today wheels, add a faint today needle
         if (!isToday && dateObj) {
             const NS = 'http://www.w3.org/2000/svg';
             const todayAng = dayToAngle(today, dateObj.getFullYear());
@@ -1117,7 +1179,6 @@ function renderMiniWheels(minis) {
             svg.appendChild(ghostDot);
         }
 
-        // Sublabel / date display
         const dateEl = document.createElement('div');
         dateEl.className = 'mini-date';
         dateEl.textContent = sublabelText;
@@ -1126,7 +1187,6 @@ function renderMiniWheels(minis) {
         wrap.appendChild(svg);
         wrap.appendChild(dateEl);
 
-        // Edit button + form (not for Today)
         if (!isToday) {
             const editBtn = document.createElement('button');
             editBtn.className = 'mini-edit-btn';
@@ -1177,11 +1237,9 @@ function renderMiniWheels(minis) {
                 const newLabel = labelInput.value.trim() || cfg.label;
                 const newDate  = dateInput.value || cfg.date;
                 const newNote  = noteInput.value.trim();
-
                 minis[i].label = newLabel;
                 minis[i].date  = newDate;
                 minis[i].sublabel = newNote || null;
-
                 saveMinis(minis);
                 renderMiniWheels(minis);
             });
