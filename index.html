@@ -45,32 +45,50 @@
         /* BRAND LOGO BLOCK */
         .wordmark {
             text-decoration: none;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
             transition: all 0.1s ease;
+            opacity: 0.85;
         }
+        .wordmark:hover { opacity: 1; }
 
-        .np-block {
-            background-color: #2a2a2a;
-            padding: 4px 10px;
-            border: 1px solid #555;
-            display: inline-block;
-            line-height: 1;
-            box-shadow: 4px 4px 0px rgba(255, 255, 255, 0.2); 
+        .npd-logo-box {
+            width: 28px;
+            height: 28px;
+            border: 1px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
         }
-
-        .np-text {
+        .npd-logo-box span {
             font-family: 'Josefin Sans', sans-serif;
-            color: #fff;
-            font-size: 0.85rem;
-            font-weight: 400;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 0;
         }
-
-        .wordmark:hover .np-block {
-            background-color: #444;
-            border-color: #fff;
-            transform: translate(2px, 2px);
-            box-shadow: 2px 2px 0px rgba(255, 255, 255, 0.3);
+        .npd-logo-box::after {
+            content: '';
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--accent);
+            bottom: 3px;
+            right: 3px;
+        }
+        .npd-wordtext {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+        .npd-wordtext b {
+            color: var(--text);
+            font-weight: 400;
         }
 
         /* TOP RIGHT NAME */
@@ -79,8 +97,11 @@
             font-size: 11px;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: var(--text);
+            color: var(--muted);
+            text-decoration: none;
+            transition: color 0.15s ease;
         }
+        .nav-name:hover { color: var(--accent); }
 
         /* HAMBURGER */
         .hamburger-bar {
@@ -345,8 +366,8 @@
         @media (max-width: 580px) {
             .services { grid-template-columns: 1fr; }
             .project { grid-template-columns: 1fr; }
-            .np-text { font-size: 0.7rem; letter-spacing: 0.08em; }
-            .np-block { padding: 4px 8px; }
+            .npd-logo-box { width: 24px; height: 24px; }
+            .npd-wordtext { display: none; }
             .nav-name { font-size: 10px; letter-spacing: 1px; }
         }
     </style>
@@ -356,9 +377,10 @@
 
     <nav>
         <a href="#" class="wordmark">
-            <span class="np-block"><span class="np-text">Null Point Design</span></span>
+            <div class="npd-logo-box"><span>N</span></div>
+            <div class="npd-wordtext"><b>Null Point Design</b></div>
         </a>
-        <span class="nav-name">Catherine Anderson</span>
+        <a href="#contact" class="nav-name">Contact</a>
     </nav>
 
     <div class="hamburger-bar">
@@ -410,7 +432,7 @@
         <div class="section-label">Work</div>
         <div class="project">
             <div>
-                <div class="project-title">Artist Portfolio Site</div>
+                <div class="project-title">Wanda Bryant — Sculptor</div>
                 <p class="project-desc">Full brand overhaul and portfolio migration for a working visual artist. Converted complex image series to optimized formats, restructured navigation, and built professional authority through clean, intentional design.</p>
                 <div class="project-tags">
                     <span class="tag">Static HTML</span>
@@ -419,6 +441,30 @@
                 </div>
             </div>
             <a href="https://artbywandabryant.com" target="_blank" class="project-link">View Site →</a>
+        </div>
+        <div class="project">
+            <div>
+                <div class="project-title">Ray Martin — Blues, Rock, Nashville</div>
+                <p class="project-desc">Atmospheric single-page site for a Nashville-area working musician. Dark cinematic aesthetic with tour dates, music embeds, press photography, and booking contact — built to match the tone of the artist, not a generic band template.</p>
+                <div class="project-tags">
+                    <span class="tag">Static HTML</span>
+                    <span class="tag">Music</span>
+                    <span class="tag">Custom design</span>
+                </div>
+            </div>
+            <a href="https://nullpointdesign.github.io/ray-martin" target="_blank" class="project-link">View Site →</a>
+        </div>
+        <div class="project">
+            <div>
+                <div class="project-title">English With Kate — Language Instruction</div>
+                <p class="project-desc">Clean, welcoming site for an independent English language instructor. Designed to establish professional credibility and make it easy for prospective students to understand services and get in touch.</p>
+                <div class="project-tags">
+                    <span class="tag">Static HTML</span>
+                    <span class="tag">Education</span>
+                    <span class="tag">Custom design</span>
+                </div>
+            </div>
+            <a href="https://englishwithkate.github.io" target="_blank" class="project-link">View Site →</a>
         </div>
     </section>
 
