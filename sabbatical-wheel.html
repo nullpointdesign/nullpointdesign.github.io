@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wheel of the Year · 2026</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Mono:wght@300;400&family=Inter:wght@300;400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Mono:wght@300;400&family=Inter:wght@300;400&family=Bebas+Neue&family=Oswald:wght@200;300;400&display=swap');
 
         :root {
             --ink: #1c1a14;
@@ -455,6 +455,45 @@
             color: var(--gold);
         }
 
+        .npd-signature {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0.6;
+            text-decoration: none;
+            margin-top: 1.5rem;
+            transition: opacity 0.25s;
+        }
+        .npd-signature:hover { opacity: 1; }
+        .npd-logo-box {
+            width: 24px; height: 24px;
+            border: 1px solid var(--gold);
+            display: flex; align-items: center; justify-content: center;
+            position: relative;
+        }
+        .npd-logo-box span {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.85rem;
+            color: var(--gold);
+        }
+        .npd-logo-box::after {
+            content: '';
+            position: absolute;
+            width: 3px; height: 3px;
+            background: var(--gold);
+            bottom: 2px; right: 2px;
+        }
+        .npd-text {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 300;
+            font-size: 0.65rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+        .npd-text b { color: var(--parchment); font-weight: 400; }
+
         /* FOOTER */
         .footer {
             text-align: center;
@@ -676,6 +715,10 @@
     <div class="footer">
         <p>Astronomical · Hybrid System · C.K. · 2019 / 2026 revision</p>
         <p style="margin-top:8px;">Cross-quarters calculated as exact midpoints between solstices and equinoxes · Traditional dates noted for cultural resonance</p>
+        <a href="https://nullpointdesign.github.io" target="_blank" rel="noopener" class="npd-signature">
+            <div class="npd-logo-box"><span>N</span></div>
+            <div class="npd-text">Site design by <b>Null Point Design</b></div>
+        </a>
     </div>
 
 </div>
@@ -760,7 +803,7 @@ function getCurrentHouse(today) {
                 const phaseStart = isRising ? bounds.start : bounds.sabbat;
                 const phaseEnd = isRising ? bounds.sabbat : bounds.end;
                 const phaseDays = Math.round((phaseEnd - phaseStart) / 86400000);
-                const phaseDay = Math.round((today - phaseStart) / 86400000) + 1;
+                const phaseDay = Math.round((todayMid - phaseStart) / 86400000) + 1;
                 const progressPct = (dayIn / totalDays) * 100;
                 const sabbatPct = Math.round(((bounds.sabbat - bounds.start) / (bounds.end - bounds.start)) * 100);
                 const nextIdx = (i + 1) % sabbats.length;
